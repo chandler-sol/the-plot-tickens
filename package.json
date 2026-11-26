@@ -17,7 +17,7 @@
     "icons": "python3 scripts/icons.py",
     "check": "npm run typecheck && npm run lint && npm run test && npm run build",
     "data:legacy": "tsx pipeline/import-litclock-csv.ts .corpus/legacy/literature-clock/litclock_annotated.csv .corpus/litclock-johsenevoldsen.jsonl litclock-johsenevoldsen 'CC BY-NC-SA 2.5' https://github.com/JohsEnevoldsen/literature-clock && tsx pipeline/import-litclock-csv.ts .corpus/legacy/litclock/image-gen/litclock_annotated.csv .corpus/litclock-kapoorankush.jsonl litclock-kapoorankush 'CC BY-NC-SA 4.0' https://github.com/kapoorankush/litclock && tsx pipeline/import-litclock-csv.ts .corpus/legacy/literary-clock/data/quotes.csv .corpus/litclock-itsfoss.jsonl litclock-itsfoss 'CC BY-NC-SA 4.0 (inherited)' https://github.com/itsfoss/literary-clock",
-    "deploy": "npm run build && npx wrangler pages deploy dist --project-name the-plot-tickens"
+    "deploy": "npm run build && npx wrangler deploy"
   },
   "repository": {
     "type": "git",
@@ -58,6 +58,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.74.0",
     "vite": "^5.4.21",
-    "vitest": "^2.1.9"
+    "vitest": "^2.1.9",
+    "wrangler": "^4.168.0"
   }
 }
