@@ -1,0 +1,58 @@
+[
+  {
+    "key": "standard-ebooks",
+    "name": "Standard Ebooks",
+    "url": "https://standardebooks.org",
+    "license": "Public domain in the USA; Standard Ebooks editions dedicated to the public domain under CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "policy": "include",
+    "priority": 1,
+    "reason": "Carefully proofread public-domain editions; each repository's LICENSE.md is checked during import.",
+    "attribution": "Quotations extracted from Standard Ebooks source repositories (github.com/standardebooks).",
+    "inputs": [".corpus/standard-ebooks.jsonl"]
+  },
+  {
+    "key": "project-gutenberg",
+    "name": "Project Gutenberg (via the GITenberg mirror)",
+    "url": "https://www.gutenberg.org",
+    "license": "Public domain in the USA (per Project Gutenberg catalogue rights statement)",
+    "policy": "include",
+    "priority": 2,
+    "reason": "Only texts whose Project Gutenberg rights metadata is “Public domain in the USA.” are mined; licence boilerplate is stripped.",
+    "attribution": "Quotations extracted from Project Gutenberg eBook texts, retrieved from the GITenberg mirror (github.com/GITenberg). Project Gutenberg is a registered trademark; this app is not affiliated with it.",
+    "inputs": [".corpus/gutenberg.jsonl"]
+  },
+  {
+    "key": "litclock-johsenevoldsen",
+    "name": "JohsEnevoldsen/literature-clock (literature-clock.jenevoldsen.com)",
+    "url": "https://github.com/JohsEnevoldsen/literature-clock",
+    "license": "CC BY-NC-SA 2.5",
+    "policy": "exclude",
+    "priority": 9,
+    "reason": "Non-commercial, share-alike compilation of reader-submitted excerpts (originally The Guardian’s 2011 call-out), most from in-copyright modern books. The CC licence covers the compilation, not the quoted works, so it cannot grant redistribution rights for the excerpts.",
+    "attribution": "Analysed for coverage only.",
+    "inputs": [".corpus/litclock-johsenevoldsen.jsonl"]
+  },
+  {
+    "key": "litclock-kapoorankush",
+    "name": "kapoorankush/litclock",
+    "url": "https://github.com/kapoorankush/litclock",
+    "license": "CC BY-NC-SA 4.0 (quote database; software is MIT)",
+    "policy": "exclude",
+    "priority": 9,
+    "reason": "The repository states explicitly that its MIT licence does not cover the quote database, which is CC BY-NC-SA 4.0 and derived from the JohsEnevoldsen corpus, cdmoro/literature-clock and the Guardian thread; most excerpts are from in-copyright books.",
+    "attribution": "Analysed for coverage only.",
+    "inputs": [".corpus/litclock-kapoorankush.jsonl"]
+  },
+  {
+    "key": "litclock-itsfoss",
+    "name": "itsfoss/literary-clock",
+    "url": "https://github.com/itsfoss/literary-clock",
+    "license": "MIT for code; quotes taken from kapoorankush/litclock (CC BY-NC-SA 4.0)",
+    "policy": "exclude",
+    "priority": 9,
+    "reason": "Its README states the quote database is taken from kapoorankush/litclock, so the same restrictions apply; the MIT software licence does not extend to the quotations.",
+    "attribution": "Analysed for coverage only.",
+    "inputs": [".corpus/litclock-itsfoss.jsonl"]
+  }
+]
