@@ -96,18 +96,22 @@ export const FitBox = memo(function FitBox({
     const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(schedule) : null;
     ro?.observe(box);
     window.addEventListener('orientationchange', schedule);
+    window.addEventListener('pageshow', schedule);
+    document.addEventListener('visibilitychange', schedule);
     document.fonts?.ready.then(schedule).catch(() => undefined);
     document.fonts?.addEventListener?.('loadingdone', schedule);
     return () => {
       cancelAnimationFrame(raf);
       ro?.disconnect();
       window.removeEventListener('orientationchange', schedule);
+      window.removeEventListener('pageshow', schedule);
+      document.removeEventListener('visibilitychange', schedule);
       document.fonts?.removeEventListener?.('loadingdone', schedule);
     };
   }, [fitKey, scale, attrRatio, maxPx]);
 
   return (
-    <div ref={outer} className="fitbox" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center' }}>
+    <div ref={outer} className="fitbox">
       <div ref={inner} style={{ width: '100%' }}>
         {children}
       </div>

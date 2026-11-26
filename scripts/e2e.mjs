@@ -117,6 +117,19 @@ try {
     await page.locator('main.clock').click({ position: { x: 195, y: 420 } });
     await page.waitForTimeout(450);
     check(await page.locator('.controls[data-visible="true"]').count() === 1, 'tap reveals controls');
+    // Regression: cycling quotations must re-fit each one to the screen, not to the previous quotation.
+    const fill = () => page.evaluate(() => {
+      const box = document.querySelector('.fitbox');
+      const content = box.firstElementChild;
+      const size = parseFloat(getComputedStyle(document.querySelector('.quote__text')).fontSize);
+      return { ratio: content.scrollHeight / box.clientHeight, widthRatio: content.scrollWidth / box.clientWidth, size };
+    });
+    for (let i = 0; i < 6; i++) {
+      await page.getByRole('button', { name: 'Next quotation' }).click();
+      await page.waitForTimeout(250);
+      const f = await fill();
+      check(f.ratio > 0.45 || f.size >= 40, `next quotation ${i + 1} fills the screen (height ${(f.ratio * 100).toFixed(0)}%, ${f.size.toFixed(1)}px)`);
+    }
     await page.screenshot({ path: `${OUT}/iphone-controls.png` });
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.waitForSelector('#settings-title');

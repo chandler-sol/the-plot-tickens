@@ -76,9 +76,16 @@ a { color: inherit; text-underline-offset: 0.18em; text-decoration-thickness: 0.
 .clock__date { display: block; font-size: 0.82em; letter-spacing: 0.06em; margin-top: 0.2em; font-style: italic; }
 .clock__stage {
   flex: 1; min-height: 0;
-  display: flex; align-items: center;
+  position: relative;
   overflow: hidden;
-  padding: clamp(8px, 2vh, 24px) 0;
+}
+/* Absolutely positioned so its size is always definite. (Safari does not resolve
+   height:100% inside a flex item, which made the fitter measure the previous
+   quotation's height instead of the screen.) */
+.fitbox {
+  position: absolute;
+  inset: clamp(8px, 2vh, 24px) 0;
+  display: flex; align-items: center;
 }
 .quote { margin: 0; width: 100%; }
 .quote__text {
@@ -127,7 +134,7 @@ mark.tp { background: none; color: var(--hl); font-weight: 700; }
 @media (orientation: landscape) {
   .mode-bedside .clock__inner { flex-direction: row; align-items: center; gap: clamp(20px, 5vw, 72px); }
   .mode-bedside .clock__time { flex: 0 0 auto; text-align: left; font-size: clamp(36px, 22vh, 160px); }
-  .mode-bedside .clock__stage { height: 100%; }
+  .mode-bedside .clock__stage { align-self: stretch; }
 }
 .mode-minimal .clock__time { display: none; }
 
