@@ -1,0 +1,64 @@
+{
+  "name": "the-plot-tickens",
+  "version": "1.0.0",
+  "description": "A literary clock: the time, told by books.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 4173",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "node scripts/e2e.mjs",
+    "data:fetch": "bash pipeline/fetch-standard-ebooks.sh pipeline/standard-ebooks-repos.txt .corpus/standard-ebooks && bash pipeline/fetch-gutenberg.sh .corpus/gutenberg",
+    "data:import": "tsx pipeline/import-standard-ebooks.ts .corpus/standard-ebooks .corpus/standard-ebooks.jsonl && tsx pipeline/import-gutenberg.ts .corpus/gutenberg .corpus/gutenberg.jsonl",
+    "data:build": "tsx pipeline/build.ts pipeline/sources.json public/data docs/coverage-report.md",
+    "icons": "python3 scripts/icons.py",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "data:legacy": "tsx pipeline/import-litclock-csv.ts .corpus/legacy/literature-clock/litclock_annotated.csv .corpus/litclock-johsenevoldsen.jsonl litclock-johsenevoldsen 'CC BY-NC-SA 2.5' https://github.com/JohsEnevoldsen/literature-clock && tsx pipeline/import-litclock-csv.ts .corpus/legacy/litclock/image-gen/litclock_annotated.csv .corpus/litclock-kapoorankush.jsonl litclock-kapoorankush 'CC BY-NC-SA 4.0' https://github.com/kapoorankush/litclock && tsx pipeline/import-litclock-csv.ts .corpus/legacy/literary-clock/data/quotes.csv .corpus/litclock-itsfoss.jsonl litclock-itsfoss 'CC BY-NC-SA 4.0 (inherited)' https://github.com/itsfoss/literary-clock",
+    "deploy": "npm run build && npx wrangler deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chandler-sol/the-plot-tickens.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/chandler-sol/the-plot-tickens/issues"
+  },
+  "homepage": "https://github.com/chandler-sol/the-plot-tickens#readme",
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/crimson-pro": "^5.3.0",
+    "@fontsource/eb-garamond": "^5.3.0",
+    "@fontsource/libre-baskerville": "^5.3.0",
+    "@fontsource/literata": "^5.3.0",
+    "@fontsource/source-serif-4": "^5.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^26.6.11",
+    "@types/react": "^18.3.32",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "fake-indexeddb": "^6.2.8",
+    "globals": "^17.14.0",
+    "jsdom": "^24.1.3",
+    "playwright-core": "1.48",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.74.0",
+    "vite": "^5.4.21",
+    "vitest": "^2.1.9",
+    "wrangler": "^4.168.0"
+  }
+}

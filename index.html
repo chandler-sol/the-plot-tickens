@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>%BRAND_NAME%</title>
+    <meta name="description" content="%BRAND_DESCRIPTION%" />
+    <meta name="theme-color" content="%BRAND_THEME%" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="%BRAND_SHORT%" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./icons/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="./icons/apple-touch-icon-152.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="./icons/apple-touch-icon-167.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+    <script>
+      // Paint the chosen theme's background on the very first frame (no flash of the wrong colour).
+      (function () {
+        try {
+          var s = JSON.parse(localStorage.getItem('plot-tickens:settings') || '{}');
+          var bg = { paper: '#f4efe6', eink: '#e4e4e1', parchment: '#ebdfc4', oled: '#000000', midnight: '#0f1626', sepia: '#f6ecd6' };
+          var t = s.theme || 'paper';
+          if (t === 'system') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'oled' : 'paper';
+          var c = s.customBg || bg[t] || bg.paper;
+          document.documentElement.style.setProperty('--bg', c);
+          document.documentElement.style.background = c;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>This clock needs JavaScript to tell the time.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
