@@ -13,7 +13,7 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { findTimes } from './lib/timeParse.ts';
 import { contentFlags, excerptAround } from './lib/text.ts';
-import { displayName, gutenbergBody, paragraphs } from './lib/gutenberg.ts';
+import { displayName, gutenbergBody, paragraphs, workTitle } from './lib/gutenberg.ts';
 import type { CandidateRecord } from './lib/schema.ts';
 
 const [, , dir, outFile, metaDirArg] = process.argv;
@@ -63,7 +63,8 @@ for (const f of files) {
     continue;
   }
   const y = readFileSync(metaPath, 'utf8');
-  const title = yamlField(y, /^title: (.+)$/m)?.split(/;\s|:\s(?=[A-Z])/)[0].replace(/--/g, '—');
+  const rawTitle = yamlField(y, /^title: (.+)$/m)?.split(/;\s|:\s(?=[A-Z])/)[0].replace(/--/g, '—');
+  const title = rawTitle ? workTitle(rawTitle) : undefined;
   const agent = yamlField(y, /author:\s*\n\s+agent_name: (.+)$/m) ?? yamlField(y, /agent_name: (.+)$/m);
   const id = yamlField(y, /^\s+gutenberg: '?(\d+)'?$/m);
   const death = Number(yamlField(y, /author:\s*\n(?:\s+\w+:.*\n)*?\s+deathdate: (\d+)/m) ?? NaN);

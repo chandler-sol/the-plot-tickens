@@ -1,11 +1,26 @@
 import { cleanInvisible } from './text.ts';
 
-/** "Austen, Jane" → "Jane Austen"; drops dates and parenthetical full names. */
+const TITLE = /^(?:Sir|Dame|Lord|Lady|Baron|Baroness|Count|Countess|Earl|Viscount|Viscountess|Marquis|Marquess|Duke|Duchess)\b/;
+
+/**
+ * Catalogue name → display name.
+ *   "Austen, Jane" → "Jane Austen"; "Caine, Hall, Sir" → "Hall Caine";
+ *   "Orczy, Emmuska Orczy, Baroness" → "Emmuska Orczy"; "Dunsany, Lord" → "Lord Dunsany".
+ */
 export function displayName(agent: string): string {
   const clean = agent.replace(/\(.*?\)/g, '').replace(/,?\s*\d{3,4}\??-\d{0,4}\??/g, '').trim();
-  const parts = clean.split(',').map((s) => s.trim()).filter(Boolean);
-  if (parts.length >= 2 && !/^(Sir|Lord|Lady|Mrs|Mr|Baron|Baroness|Count)\b/.test(parts[1])) return `${parts.slice(1).join(' ')} ${parts[0]}`.replace(/\s+/g, ' ');
-  return parts.join(' ');
+  const parts = clean.split(',').map((x) => x.trim()).filter(Boolean);
+  if (parts.length < 2) return parts.join(' ');
+  const [surname, ...rest] = parts;
+  const given = rest.filter((x) => !TITLE.test(x)).join(' ');
+  if (!given) return `${rest[0]} ${surname}`.replace(/\s+/g, ' ');
+  if (given === surname || given.endsWith(` ${surname}`)) return given.replace(/\s+/g, ' ');
+  return `${given} ${surname}`.replace(/\s+/g, ' ');
+}
+
+/** "Paul Clifford — Volume 07" → "Paul Clifford" (multi-volume eBooks share one work). */
+export function workTitle(title: string): string {
+  return title.replace(/\s*[,—–:-]\s*(?:Volume|Vol\.?|Part|Book)\s+(?:\d+|[IVXLC]+)\.?\s*$/i, '').trim() || title;
 }
 
 export function gutenbergBody(raw: string): string | null {

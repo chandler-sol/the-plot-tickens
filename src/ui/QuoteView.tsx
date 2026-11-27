@@ -73,7 +73,9 @@ export const FitBox = memo(function FitBox({
         content.style.setProperty('--qsize', `${px}px`);
         content.style.setProperty('--asize', `${Math.max(12, Math.min(26, px * attrRatio))}px`);
       };
-      const fits = () => content.scrollHeight <= H + 0.5 && content.scrollWidth <= W + 0.5;
+      // Height is what matters; width only guards against a single unbreakable word. A few pixels of
+      // horizontal tolerance absorbs glyph overhang (italics, quotation marks) so it can't force a tiny size.
+      const fits = () => content.scrollHeight <= H + 0.5 && content.scrollWidth <= W + 4;
       let lo = 11;
       let hi = Math.max(lo, Math.min(maxPx, W / 7.5, H / 3.2) * scale);
       apply(hi);
