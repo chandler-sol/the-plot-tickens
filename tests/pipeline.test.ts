@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { contentFlags, dedupeKey, excerptAround, sentenceSpans } from '../pipeline/lib/text';
 import { validate } from '../pipeline/lib/validate';
-import { displayName, gutenbergBody, paragraphs } from '../pipeline/lib/gutenberg';
+import { displayName, gutenbergBody, paragraphs, workTitle } from '../pipeline/lib/gutenberg';
 import type { CandidateRecord } from '../pipeline/lib/schema';
 
 const rec = (over: Partial<CandidateRecord> = {}): CandidateRecord => ({
@@ -54,6 +54,12 @@ describe('content flags', () => {
 });
 
 describe('Project Gutenberg text handling', () => {
+  it('drops volume numbers from work titles', () => {
+    expect(workTitle('Paul Clifford — Volume 07')).toBe('Paul Clifford');
+    expect(workTitle('A Charming Fellow, Volume III')).toBe('A Charming Fellow');
+    expect(workTitle('The Volume of Light')).toBe('The Volume of Light');
+  });
+
   const book = [
     'The Project Gutenberg EBook of Test', '', '*** START OF THIS PROJECT GUTENBERG EBOOK TEST ***', '', 'Produced by Someone', '',
     'CHAPTER I', '', 'It was _exactly_ ten o\'clock--no', 'more, no less.', '', '*** END OF THIS PROJECT GUTENBERG EBOOK TEST ***', 'licence text',
@@ -69,5 +75,11 @@ describe('Project Gutenberg text handling', () => {
   it('formats catalogue names', () => {
     expect(displayName('Austen, Jane')).toBe('Jane Austen');
     expect(displayName('Twain, Mark, 1835-1910')).toBe('Mark Twain');
+    expect(displayName('Lytton, Edward Bulwer Lytton, Baron')).toBe('Edward Bulwer Lytton');
+    expect(displayName('Caine, Hall, Sir')).toBe('Hall Caine');
+    expect(displayName('Disraeli, Benjamin, Earl of Beaconsfield')).toBe('Benjamin Disraeli');
+    expect(displayName('Dunsany, Lord')).toBe('Lord Dunsany');
+    expect(displayName('Marquis, Don')).toBe('Don Marquis');
+    expect(displayName('Biggers, Earl Derr')).toBe('Earl Derr Biggers');
   });
 });

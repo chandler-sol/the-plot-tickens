@@ -131,6 +131,18 @@ try {
       check(f.ratio > 0.45 || f.size >= 40, `next quotation ${i + 1} fills the screen (height ${(f.ratio * 100).toFixed(0)}%, ${f.size.toFixed(1)}px)`);
     }
     await page.screenshot({ path: `${OUT}/iphone-controls.png` });
+    // Regression: a few pixels of glyph overhang (Safari's hanging punctuation, italic overhang)
+    // must not collapse the text to the minimum size.
+    {
+      const before = await fill();
+      await page.addStyleTag({ content: '.quote__text { margin-right: -3px !important; }' });
+      await page.setViewportSize({ width: 391, height: 844 });
+      await page.waitForTimeout(300);
+      const after = await fill();
+      check(after.size >= before.size * 0.85, `small horizontal overhang does not shrink the text (${before.size.toFixed(1)}px → ${after.size.toFixed(1)}px)`);
+      await page.setViewportSize({ width: 390, height: 844 });
+    }
+    await page.keyboard.press('x'); // any key re-reveals the auto-hiding controls
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.waitForSelector('#settings-title');
     await page.screenshot({ path: `${OUT}/iphone-settings.png` });

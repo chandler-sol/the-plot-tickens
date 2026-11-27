@@ -92,7 +92,8 @@ a { color: inherit; text-underline-offset: 0.18em; text-decoration-thickness: 0.
   margin: 0;
   font-size: var(--qsize, 32px);
   line-height: 1.32;
-  hanging-punctuation: first last;
+  /* No hanging-punctuation: in Safari (the only browser that supports it) a hung closing
+     quote overflows the box by a few pixels and made the fitter shrink the text. */
   text-wrap: pretty;
   white-space: pre-line;
   overflow-wrap: break-word;
